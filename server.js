@@ -27,7 +27,7 @@ if (process.env.NODE_ENV !== 'production') {
 const port = process.env.PORT || 4000
 
 app.get('/api/v1/health', (req, res) => {
-  res.send('ok - the api is running')
+  res.send('ok')
 })
 
 app.use('/api/v1/auth', authRouter)
