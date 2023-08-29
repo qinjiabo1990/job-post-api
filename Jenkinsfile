@@ -39,7 +39,7 @@ pipeline {
       steps{
         script {
           // dockerImage = docker.build "${IMAGE_REPO_NAME}:${IMAGE_TAG}"
-          sh "docker buildx build --platform linux/amd64*,linux/arm64* -t ${IMAGE_REPO_NAME} ."
+          sh "docker buildx build --platform linux/amd64,linux/arm64 -t ${IMAGE_REPO_NAME} ."
         }
       }
     }
