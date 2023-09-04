@@ -1,5 +1,5 @@
 # this is for Mac to ECR and ECS
-FROM --platform=linux/arm64/v8 node:18-alpine
+FROM --platform=linux/arm64 node:18-alpine
 # FROM node:18-alpine 
 WORKDIR /app
 COPY package.json package-lock.json ./
