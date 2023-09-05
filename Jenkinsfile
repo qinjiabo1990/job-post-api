@@ -35,27 +35,11 @@ pipeline {
       }
     }
 
-    stage('Create .env File') {
-            steps {
-                script {
-                    // Define the content of your .env file
-                    def envContent = """
-                        MONGO_URL=$MONGO_URL
-                        PORT=5000
-                        """
-
-                    // Write the content to a .env file
-                    writeFile file: '.env', text: envContent
-                }
-            }
-        }
-
     // Building Docker images
     stage('Building image') {
       steps{
         script {
-          // dockerImage = docker.build "${IMAGE_REPO_NAME}:${IMAGE_TAG}"
-          sh "docker build -t ${IMAGE_REPO_NAME} ."
+          sh "docker build -t ${IMAGE_REPO_NAME} --build-arg MONGO_URL=${MONGO_URL} ."
         }
       }
     }
@@ -70,11 +54,4 @@ pipeline {
       }
     }
   }
-
-  post {
-        always {
-            // Clean up the .env file after use (optional)
-            deleteFile file: '.env'
-        }
-    }
 }
