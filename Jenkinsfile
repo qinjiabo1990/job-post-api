@@ -39,10 +39,10 @@ pipeline {
             steps {
                 script {
                     // Define the content of your .env file
-                    def envContent = '
+                    def envContent = "
                         MONGO_URL=$MONGO_URL
                         PORT=5000
-                        '
+                        "
 
                     // Write the content to a .env file
                     writeFile file: '.env', text: envContent
