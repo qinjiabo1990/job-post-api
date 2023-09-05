@@ -6,9 +6,16 @@ pipeline {
     IMAGE_REPO_NAME="bob-job-post-api"
     IMAGE_TAG="latest"
     REPOSITORY_URI = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}"
+    MONGO_URL=credentials("MONGO_URL")
   }
 
   stages {
+    stage('Checking ENV') {
+      steps {
+        sh 'echo $MONGO_URL'
+      }
+    }
+
     stage('Logging into AWS ECR') {
       steps {
         script {
@@ -34,6 +41,21 @@ pipeline {
       }
     }
 
+    stage('Create .env File') {
+            steps {
+                script {
+                    // Define the content of your .env file
+                    def envContent = """
+                        MONGO_URL=${MONGO_URL}
+                        PORT=5000
+                        """
+
+                    // Write the content to a .env file
+                    writeFile file: '.env', text: envContent
+                }
+            }
+        }
+
     // Building Docker images
     stage('Building image') {
       steps{
@@ -53,5 +75,12 @@ pipeline {
         }
       }
     }
-}
+  }
+
+  post {
+        always {
+            // Clean up the .env file after use (optional)
+            deleteFile file: '.env'
+        }
+    }
 }
