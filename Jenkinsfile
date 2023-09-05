@@ -10,12 +10,6 @@ pipeline {
   }
 
   stages {
-    stage('Checking ENV') {
-      steps {
-        sh 'echo $MONGO_URL'
-      }
-    }
-
     stage('Logging into AWS ECR') {
       steps {
         script {
@@ -45,10 +39,10 @@ pipeline {
             steps {
                 script {
                     // Define the content of your .env file
-                    def envContent = """
-                        MONGO_URL=${MONGO_URL}
+                    def envContent = '
+                        MONGO_URL=$MONGO_URL
                         PORT=5000
-                        """
+                        '
 
                     // Write the content to a .env file
                     writeFile file: '.env', text: envContent
